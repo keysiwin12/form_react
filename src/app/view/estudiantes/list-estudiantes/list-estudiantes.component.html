@@ -1,0 +1,58 @@
+
+<span class="bg-primary text-light h1 col-2">Alumnos</span>
+<form>
+    <div class="form-group form-inline mt-4">
+        Buscar: <input class="form-control ml-2" type="text" [formControl]="filter"/>
+    </div>
+  </form>
+
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Nombre</th>
+    <th scope="col">Apellido</th>
+    <th scope="col">Edad</th>
+    <th scope="col"><app-create-estudiantes
+        (pasarDatos)= "procesaDatos($event)" 
+    >
+    </app-create-estudiantes></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let alumno of alumnos$ | async; index as i ">
+    <td>{{alumno.id}}</td>
+    <td>
+        <!-- {{alumno.nombre}} -->
+      <ngb-highlight [result]="alumno.nombre" [term]="filter.value"></ngb-highlight>
+      
+    </td>
+    <td>
+      <!-- {{alumno.apellido}} -->
+      <ngb-highlight [result]="alumno.apellido" [term]="filter.value"></ngb-highlight>
+    </td>
+    <td>
+      <!-- {{alumno.edad}} -->
+      <ngb-highlight [result]="alumno.edad | number" [term]="filter.value"></ngb-highlight>
+    </td>
+
+    <td>
+        <app-update-estudiantes
+            [alumnosE] = "alumnos[alumno.id-1]"
+            (pasarEditados)= "editaDatos($event)"
+            
+        ></app-update-estudiantes>
+        <app-delete-estudiantes
+            [alumnos] = "alumnos[alumno.id-1]"
+            [alumnosArray] = "alumnos"
+            (EliminaDatos)= "EliminaDatos($event)"
+        ></app-delete-estudiantes>
+    </td>
+  </tr>
+  </tbody>
+
+
+  
+
+</table>
